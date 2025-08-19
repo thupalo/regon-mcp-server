@@ -1,0 +1,8 @@
+mcp>=1.0.0
+python-dotenv>=1.0.0
+git+https://github.com/rolzwy7/RegonAPI.git
+
+# HTTP server dependencies (optional)
+fastapi>=0.104.0
+uvicorn>=0.24.0
+requests>=2.31.0

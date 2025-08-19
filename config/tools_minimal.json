@@ -1,0 +1,76 @@
+{
+  "name": "RegonAPI MCP Server - Minimal",
+  "version": "1.0.0",
+  "description": "Simplified access to Polish REGON database - essential tools only",
+  "language": "en",
+  "capabilities": {
+    "tools": true,
+    "resources": false,
+    "prompts": false
+  },
+  "serverInfo": {
+    "name": "regon-api",
+    "version": "1.13.0"
+  },
+  "tools": [
+    {
+      "name": "regon_search_by_nip",
+      "description": "Search company by NIP tax number",
+      "category": "search",
+      "priority": "high",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "nip": {
+            "type": "string",
+            "description": "10-digit NIP number"
+          }
+        },
+        "required": ["nip"]
+      }
+    },
+    {
+      "name": "regon_search_by_regon",
+      "description": "Search company by REGON number",
+      "category": "search",
+      "priority": "high",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "regon": {
+            "type": "string",
+            "description": "9 or 14-digit REGON number"
+          }
+        },
+        "required": ["regon"]
+      }
+    },
+    {
+      "name": "regon_search_by_krs",
+      "description": "Search company by KRS court register number",
+      "category": "search",
+      "priority": "high",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "krs": {
+            "type": "string",
+            "description": "10-digit KRS number"
+          }
+        },
+        "required": ["krs"]
+      }
+    },
+    {
+      "name": "regon_get_service_status",
+      "description": "Check REGON service status",
+      "category": "monitoring",
+      "priority": "low",
+      "inputSchema": {
+        "type": "object",
+        "properties": {},
+        "additionalProperties": false
+      }
+    }
+  ]
+}

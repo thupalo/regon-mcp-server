@@ -1,0 +1,144 @@
+{
+  "mcp_server": "regon-api",
+  "version": "1.0.0",
+  "description": "Polish business registry (REGON) database access via MCP protocol",
+  "quick_reference": {
+    "primary_search_tools": [
+      "regon_search_by_nip",
+      "regon_search_by_regon", 
+      "regon_search_by_krs"
+    ],
+    "bulk_tools": [
+      "regon_search_multiple_nips",
+      "regon_search_multiple_regons9",
+      "regon_search_multiple_krs"
+    ],
+    "detailed_reports": [
+      "regon_get_full_report"
+    ],
+    "monitoring": [
+      "regon_get_service_status",
+      "regon_get_data_status"
+    ]
+  },
+  "ai_usage_guide": {
+    "when_user_asks_about": {
+      "company_by_tax_number": "regon_search_by_nip",
+      "company_by_court_register": "regon_search_by_krs", 
+      "company_by_business_registry": "regon_search_by_regon",
+      "multiple_companies": "regon_search_multiple_*",
+      "detailed_company_info": "regon_get_full_report",
+      "business_activities": "regon_get_full_report + BIR11OsPrawnaPkd",
+      "service_availability": "regon_get_service_status"
+    },
+    "identifier_formats": {
+      "nip": "10 digits, e.g., 7342867148 or 734-286-71-48",
+      "regon": "9 digits (main) or 14 digits (local unit), e.g., 492707333",
+      "krs": "10 digits with leading zeros, e.g., 0000006865"
+    },
+    "sample_companies": {
+      "cd_projekt": {
+        "nip": "7342867148",
+        "regon": "492707333", 
+        "krs": "0000006865",
+        "name": "CD PROJEKT SPÓŁKA AKCYJNA"
+      }
+    }
+  },
+  "tools_optimized": [
+    {
+      "name": "regon_search_by_nip",
+      "ai_description": "Search Polish companies by tax number (NIP)",
+      "ai_trigger_phrases": ["tax number", "NIP", "company by tax", "fiscal number"],
+      "input": {"nip": "string (10 digits)"},
+      "output": "Company details: name, address, REGON, business type",
+      "example": {
+        "call": {"name": "regon_search_by_nip", "arguments": {"nip": "7342867148"}},
+        "result": "CD PROJEKT SPÓŁKA AKCYJNA, Warszawa, REGON: 492707333"
+      }
+    },
+    {
+      "name": "regon_search_by_regon",
+      "ai_description": "Search Polish companies by business registry number (REGON)",
+      "ai_trigger_phrases": ["REGON", "business registry", "registry number"],
+      "input": {"regon": "string (9 or 14 digits)"},
+      "output": "Company details: name, address, NIP, business type",
+      "example": {
+        "call": {"name": "regon_search_by_regon", "arguments": {"regon": "492707333"}},
+        "result": "CD PROJEKT SPÓŁKA AKCYJNA, NIP: 7342867148"
+      }
+    },
+    {
+      "name": "regon_search_by_krs",
+      "ai_description": "Search Polish companies by court register number (KRS)",
+      "ai_trigger_phrases": ["KRS", "court register", "legal entity"],
+      "input": {"krs": "string (10 digits with zeros)"},
+      "output": "Company details: name, address, NIP, REGON",
+      "example": {
+        "call": {"name": "regon_search_by_krs", "arguments": {"krs": "0000006865"}},
+        "result": "CD PROJEKT SPÓŁKA AKCYJNA, NIP: 7342867148, REGON: 492707333"
+      }
+    },
+    {
+      "name": "regon_search_multiple_nips",
+      "ai_description": "Search multiple Polish companies by tax numbers (bulk NIP search)",
+      "ai_trigger_phrases": ["multiple companies", "several NIPs", "bulk search", "list of tax numbers"],
+      "input": {"nips": "array of strings"},
+      "output": "Multiple company details blocks",
+      "example": {
+        "call": {"name": "regon_search_multiple_nips", "arguments": {"nips": ["7342867148", "5260255203"]}},
+        "result": "Results for multiple companies including CD PROJEKT and PKO Bank"
+      }
+    },
+    {
+      "name": "regon_get_full_report",
+      "ai_description": "Get detailed business report for a company",
+      "ai_trigger_phrases": ["detailed report", "business activities", "PKD codes", "full information"],
+      "input": {"regon": "string", "report_name": "string"},
+      "output": "Comprehensive business data depending on report type",
+      "common_reports": {
+        "BIR11OsPrawna": "Basic legal entity data",
+        "BIR11OsPrawnaPkd": "Business activity codes (PKD)",
+        "BIR11TypPodmiotu": "Entity type information"
+      },
+      "example": {
+        "call": {"name": "regon_get_full_report", "arguments": {"regon": "492707333", "report_name": "BIR11OsPrawna"}},
+        "result": "Detailed CD PROJEKT company information including registration dates, capital, etc."
+      }
+    },
+    {
+      "name": "regon_get_service_status",
+      "ai_description": "Check if REGON service is available",
+      "ai_trigger_phrases": ["service status", "is working", "availability", "health check"],
+      "input": {},
+      "output": "Service availability status",
+      "example": {
+        "call": {"name": "regon_get_service_status", "arguments": {}},
+        "result": "Service Status Code: 1, Status Message: Available"
+      }
+    }
+  ],
+  "ai_decision_tree": {
+    "user_has_nip": "use regon_search_by_nip",
+    "user_has_regon": "use regon_search_by_regon", 
+    "user_has_krs": "use regon_search_by_krs",
+    "user_has_multiple_identifiers": "use appropriate regon_search_multiple_*",
+    "user_wants_detailed_info": "first search to get REGON, then regon_get_full_report",
+    "user_wants_business_activities": "regon_get_full_report with BIR11OsPrawnaPkd",
+    "user_reports_errors": "regon_get_service_status or regon_get_last_error_code",
+    "unknown_identifier_type": "ask user to clarify or provide format example"
+  },
+  "response_interpretation": {
+    "no_results": "Company not found or identifier invalid",
+    "multiple_results": "Identifier matches multiple entities (rare)",
+    "error_response": "Check service status or identifier format",
+    "empty_fields": "Some data not available in registry"
+  },
+  "best_practices": {
+    "always_verify_format": "Check identifier format before calling",
+    "use_bulk_for_multiple": "More efficient than individual calls",
+    "cache_results": "REGON data doesn't change frequently",
+    "handle_unicode": "Polish characters in company names",
+    "check_service_first": "If getting errors, verify service status"
+  }
+}

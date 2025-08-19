@@ -1,0 +1,584 @@
+{
+  "name": "RegonAPI MCP Server",
+  "version": "1.0.0",
+  "description": "Model Context Protocol server for accessing Polish GUS REGON database - comprehensive business entity information system",
+  "capabilities": {
+    "tools": true,
+    "resources": false,
+    "prompts": false
+  },
+  "serverInfo": {
+    "name": "regon-api",
+    "version": "1.13.0"
+  },
+  "tools": [
+    {
+      "name": "regon_search_by_nip",
+      "description": "Search for Polish business entities by NIP (Tax Identification Number). Returns comprehensive company information including registration details, address, and business classification.",
+      "category": "search",
+      "priority": "high",
+      "aiUsage": {
+        "when": "When user asks about a company by tax number, NIP, or wants to verify tax registration",
+        "examples": [
+          "Find company with NIP 7342867148",
+          "What company has tax number 734-286-71-48?",
+          "Search for business entity by NIP",
+          "Verify company registration with tax ID"
+        ]
+      },
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "nip": {
+            "type": "string",
+            "description": "Polish NIP (Tax Identification Number) - 10 digits, hyphens optional",
+            "pattern": "^[0-9]{10}$|^[0-9]{3}-[0-9]{3}-[0-9]{2}-[0-9]{2}$",
+            "examples": [
+              "7342867148",
+              "734-286-71-48",
+              "5260255203",
+              "526-025-52-03"
+            ]
+          }
+        },
+        "required": ["nip"]
+      },
+      "outputFormat": {
+        "type": "formatted_text",
+        "structure": {
+          "regon": "9 or 14 digit REGON number",
+          "nip": "10 digit NIP number",
+          "nazwa": "Company name",
+          "wojewodztwo": "Voivodeship (province)",
+          "powiat": "County",
+          "gmina": "Municipality",
+          "miejscowosc": "City/Town",
+          "kodPocztowy": "Postal code",
+          "ulica": "Street name",
+          "nrNieruchomosci": "Building number",
+          "typ": "Entity type (P=Legal, F=Physical)"
+        }
+      },
+      "sampleRequest": {
+        "name": "regon_search_by_nip",
+        "arguments": {
+          "nip": "7342867148"
+        }
+      },
+      "sampleResponse": "--- Result 1 ---\nRegon: 492707333\nNip: 7342867148\nNazwa: CD PROJEKT SPÓŁKA AKCYJNA\nWojewodztwo: MAZOWIECKIE\nPowiat: m. st. Warszawa\nGmina: Praga-Północ\nMiejscowosc: Warszawa\nKodPocztowy: 03-301\nUlica: ul. Test-Wilcza\nNrNieruchomosci: 74\nTyp: P"
+    },
+    {
+      "name": "regon_search_by_regon",
+      "description": "Search for Polish business entities by REGON number (National Business Registry Number). REGON is the primary identifier in Polish business register.",
+      "category": "search",
+      "priority": "high",
+      "aiUsage": {
+        "when": "When user asks about a company by REGON number or mentions business registry identifier",
+        "examples": [
+          "Find company with REGON 492707333",
+          "Search business by registry number",
+          "What is REGON 49270733300000?",
+          "Look up entity in business register"
+        ]
+      },
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "regon": {
+            "type": "string",
+            "description": "REGON number - 9 digits (main entity) or 14 digits (local unit)",
+            "pattern": "^[0-9]{9}$|^[0-9]{14}$",
+            "examples": [
+              "492707333",
+              "49270733300000",
+              "017206916",
+              "01720691600000"
+            ]
+          }
+        },
+        "required": ["regon"]
+      },
+      "outputFormat": {
+        "type": "formatted_text",
+        "structure": "Same as NIP search - comprehensive entity information"
+      },
+      "sampleRequest": {
+        "name": "regon_search_by_regon",
+        "arguments": {
+          "regon": "492707333"
+        }
+      },
+      "sampleResponse": "--- Result 1 ---\nRegon: 492707333\nNip: 7342867148\nNazwa: CD PROJEKT SPÓŁKA AKCYJNA\nWojewodztwo: MAZOWIECKIE\nPowiat: m. st. Warszawa\nGmina: Praga-Północ\nMiejscowosc: Warszawa\nKodPocztowy: 03-301\nUlica: ul. Test-Wilcza\nNrNieruchomosci: 74\nTyp: P"
+    },
+    {
+      "name": "regon_search_by_krs",
+      "description": "Search for Polish business entities by KRS number (National Court Register). KRS contains information about companies, foundations, and associations registered in courts.",
+      "category": "search",
+      "priority": "high",
+      "aiUsage": {
+        "when": "When user asks about a company by court register number, KRS, or legal entity registration",
+        "examples": [
+          "Find company with KRS 0000006865",
+          "Search by court register number",
+          "What company has KRS number?",
+          "Look up legal entity registration"
+        ]
+      },
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "krs": {
+            "type": "string",
+            "description": "KRS number - 10 digits with leading zeros",
+            "pattern": "^[0-9]{10}$",
+            "examples": [
+              "0000006865",
+              "0000033260",
+              "0000012345"
+            ]
+          }
+        },
+        "required": ["krs"]
+      },
+      "outputFormat": {
+        "type": "formatted_text",
+        "structure": "Same as NIP search - comprehensive entity information"
+      },
+      "sampleRequest": {
+        "name": "regon_search_by_krs",
+        "arguments": {
+          "krs": "0000006865"
+        }
+      },
+      "sampleResponse": "--- Result 1 ---\nRegon: 492707333\nNip: 7342867148\nNazwa: CD PROJEKT SPÓŁKA AKCYJNA\nWojewodztwo: MAZOWIECKIE\nPowiat: m. st. Warszawa\nGmina: Praga-Północ\nMiejscowosc: Warszawa\nKodPocztowy: 03-301\nUlica: ul. Test-Wilcza\nNrNieruchomosci: 74\nTyp: P"
+    },
+    {
+      "name": "regon_search_multiple_nips",
+      "description": "Bulk search for multiple Polish business entities by their NIP numbers. Efficient for processing multiple companies at once.",
+      "category": "bulk_search",
+      "priority": "medium",
+      "aiUsage": {
+        "when": "When user wants to search for multiple companies at once, or has a list of tax numbers to verify",
+        "examples": [
+          "Find companies with NIPs 7342867148, 5260255203",
+          "Bulk search for multiple tax numbers",
+          "Check these companies: [list of NIPs]",
+          "Verify multiple business registrations"
+        ]
+      },
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "nips": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "pattern": "^[0-9]{10}$|^[0-9]{3}-[0-9]{3}-[0-9]{2}-[0-9]{2}$"
+            },
+            "description": "Array of NIP numbers to search",
+            "minItems": 1,
+            "maxItems": 20,
+            "examples": [
+              ["7342867148", "5260255203"],
+              ["734-286-71-48", "526-025-52-03", "521-301-89-52"]
+            ]
+          }
+        },
+        "required": ["nips"]
+      },
+      "outputFormat": {
+        "type": "formatted_text",
+        "structure": "Multiple result blocks, one for each found entity"
+      },
+      "sampleRequest": {
+        "name": "regon_search_multiple_nips",
+        "arguments": {
+          "nips": ["7342867148", "5260255203"]
+        }
+      },
+      "sampleResponse": "--- Result 1 ---\nRegon: 492707333\nNip: 7342867148\nNazwa: CD PROJEKT SPÓŁKA AKCYJNA\n...\n--- Result 2 ---\nRegon: 017206916\nNip: 5260255203\nNazwa: POWSZECHNA KASA OSZCZĘDNOŚCI BANK POLSKI SPÓŁKA AKCYJNA\n..."
+    },
+    {
+      "name": "regon_search_multiple_regons9",
+      "description": "Bulk search for multiple Polish business entities by their 9-digit REGON numbers (main entities).",
+      "category": "bulk_search",
+      "priority": "medium",
+      "aiUsage": {
+        "when": "When user wants to search for multiple companies by REGON numbers, or has a list of main entity REGONs",
+        "examples": [
+          "Find companies with REGONs 492707333, 017206916",
+          "Bulk search by business registry numbers",
+          "Check these main entities: [list of 9-digit REGONs]"
+        ]
+      },
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "regons9": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "pattern": "^[0-9]{9}$"
+            },
+            "description": "Array of 9-digit REGON numbers",
+            "minItems": 1,
+            "maxItems": 20,
+            "examples": [
+              ["492707333", "017206916"],
+              ["492707333", "017206916", "017179322"]
+            ]
+          }
+        },
+        "required": ["regons9"]
+      },
+      "outputFormat": {
+        "type": "formatted_text",
+        "structure": "Multiple result blocks, one for each found entity"
+      },
+      "sampleRequest": {
+        "name": "regon_search_multiple_regons9",
+        "arguments": {
+          "regons9": ["492707333", "017206916"]
+        }
+      }
+    },
+    {
+      "name": "regon_search_multiple_regons14",
+      "description": "Bulk search for multiple Polish business entities by their 14-digit REGON numbers (local units/branches).",
+      "category": "bulk_search",
+      "priority": "medium",
+      "aiUsage": {
+        "when": "When user wants to search for specific local units or branches by 14-digit REGON numbers",
+        "examples": [
+          "Find local units with REGONs 49270733300000, 01720691600000",
+          "Search for company branches",
+          "Check these local units: [list of 14-digit REGONs]"
+        ]
+      },
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "regons14": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "pattern": "^[0-9]{14}$"
+            },
+            "description": "Array of 14-digit REGON numbers",
+            "minItems": 1,
+            "maxItems": 20,
+            "examples": [
+              ["49270733300000", "01720691600000"]
+            ]
+          }
+        },
+        "required": ["regons14"]
+      },
+      "outputFormat": {
+        "type": "formatted_text",
+        "structure": "Multiple result blocks for local units"
+      }
+    },
+    {
+      "name": "regon_search_multiple_krs",
+      "description": "Bulk search for multiple Polish business entities by their KRS numbers (court register entries).",
+      "category": "bulk_search",
+      "priority": "medium",
+      "aiUsage": {
+        "when": "When user wants to search for multiple companies by court register numbers",
+        "examples": [
+          "Find companies with KRS numbers 0000006865, 0000033260",
+          "Bulk search by court register",
+          "Check these legal entities: [list of KRS numbers]"
+        ]
+      },
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "krss": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "pattern": "^[0-9]{10}$"
+            },
+            "description": "Array of KRS numbers",
+            "minItems": 1,
+            "maxItems": 20,
+            "examples": [
+              ["0000006865", "0000033260"]
+            ]
+          }
+        },
+        "required": ["krss"]
+      },
+      "outputFormat": {
+        "type": "formatted_text",
+        "structure": "Multiple result blocks for legal entities"
+      }
+    },
+    {
+      "name": "regon_get_full_report",
+      "description": "Download comprehensive business reports for a specific entity. Provides detailed information including financial data, business activities, PKD codes, and organizational structure.",
+      "category": "reports",
+      "priority": "high",
+      "aiUsage": {
+        "when": "When user needs detailed company information, financial data, business activities, or specific reports",
+        "examples": [
+          "Get full report for REGON 492707333",
+          "Download BIR11OsPrawna report for company",
+          "Show PKD codes for this business",
+          "What are the business activities of this company?"
+        ]
+      },
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "regon": {
+            "type": "string",
+            "description": "REGON number (9 or 14 digits)",
+            "pattern": "^[0-9]{9}$|^[0-9]{14}$",
+            "examples": ["492707333", "49270733300000"]
+          },
+          "report_name": {
+            "type": "string",
+            "description": "Type of report to generate",
+            "enum": [
+              "BIR11OsFizycznaDaneOgolne",
+              "BIR11OsFizycznaDzialalnoscCeidg",
+              "BIR11OsFizycznaDzialalnoscRolnicza",
+              "BIR11OsFizycznaDzialalnoscPozostala",
+              "BIR11OsFizycznaDzialalnoscSkreslonaDo20141108",
+              "BIR11OsFizycznaPkd",
+              "BIR11OsFizycznaListaJednLokalnych",
+              "BIR11JednLokalnaOsFizycznej",
+              "BIR11JednLokalnaOsFizycznejPkd",
+              "BIR11OsPrawna",
+              "BIR11OsPrawnaPkd",
+              "BIR11OsPrawnaListaJednLokalnych",
+              "BIR11JednLokalnaOsPrawnej",
+              "BIR11JednLokalnaOsPrawnejPkd",
+              "BIR11OsPrawnaSpCywilnaWspolnicy",
+              "BIR11TypPodmiotu"
+            ],
+            "examples": ["BIR11OsPrawna", "BIR11OsPrawnaPkd", "BIR11TypPodmiotu"]
+          },
+          "strict": {
+            "type": "boolean",
+            "description": "Whether to validate report name strictly",
+            "default": true
+          }
+        },
+        "required": ["regon", "report_name"]
+      },
+      "reportTypes": {
+        "BIR11OsPrawna": "Basic legal entity data - company details, registration info",
+        "BIR11OsPrawnaPkd": "Legal entity PKD codes - business activity classifications",
+        "BIR11TypPodmiotu": "Entity type information",
+        "BIR11OsFizycznaDaneOgolne": "Physical person general data",
+        "BIR11OsFizycznaPkd": "Physical person PKD codes",
+        "BIR11JednLokalnaOsPrawnej": "Local unit of legal entity",
+        "BIR11OsPrawnaListaJednLokalnych": "List of local units for legal entity"
+      },
+      "outputFormat": {
+        "type": "structured_data",
+        "structure": "Detailed records with specific fields depending on report type"
+      },
+      "sampleRequest": {
+        "name": "regon_get_full_report",
+        "arguments": {
+          "regon": "492707333",
+          "report_name": "BIR11OsPrawna"
+        }
+      },
+      "sampleResponse": "--- Record 1 ---\npraw_regon9: 492707333\npraw_nip: 7342867148\npraw_nazwa: CD PROJEKT SPÓŁKA AKCYJNA\npraw_nazwaSkrocona: CD PROJEKT S.A.\npraw_numerWRejestrzeEwidencji: 0000006865\npraw_dataWpisuDoREGON: 1994-03-17\npraw_dataRozpoczeciaActions: 1994-03-17\n..."
+    },
+    {
+      "name": "regon_get_service_status",
+      "description": "Check the current status and availability of the RegonAPI service. Returns service health information.",
+      "category": "monitoring",
+      "priority": "low",
+      "aiUsage": {
+        "when": "When user wants to check if the service is working, or troubleshoot connection issues",
+        "examples": [
+          "Is the REGON service working?",
+          "Check service status",
+          "Is the database available?",
+          "Service health check"
+        ]
+      },
+      "inputSchema": {
+        "type": "object",
+        "properties": {}
+      },
+      "outputFormat": {
+        "type": "status_message",
+        "structure": {
+          "statusCode": "Numeric status code (1=Available)",
+          "statusMessage": "Human readable status message"
+        }
+      },
+      "sampleRequest": {
+        "name": "regon_get_service_status",
+        "arguments": {}
+      },
+      "sampleResponse": "Service Status Code: 1\nStatus Message: Available"
+    },
+    {
+      "name": "regon_get_data_status",
+      "description": "Get information about the last database update date. Shows when the REGON database was last refreshed with new data.",
+      "category": "monitoring",
+      "priority": "low",
+      "aiUsage": {
+        "when": "When user wants to know how current the data is, or check database freshness",
+        "examples": [
+          "When was the database last updated?",
+          "How current is this data?",
+          "Data freshness check",
+          "Last update date"
+        ]
+      },
+      "inputSchema": {
+        "type": "object",
+        "properties": {}
+      },
+      "outputFormat": {
+        "type": "date_string",
+        "format": "DD-MM-YYYY"
+      },
+      "sampleRequest": {
+        "name": "regon_get_data_status",
+        "arguments": {}
+      },
+      "sampleResponse": "Data Status (Last Update): 19-10-2018"
+    },
+    {
+      "name": "regon_get_available_operations",
+      "description": "List all available WSDL operations in the RegonAPI service. Technical information about API capabilities.",
+      "category": "monitoring",
+      "priority": "low",
+      "aiUsage": {
+        "when": "When user needs technical information about API capabilities or available operations",
+        "examples": [
+          "What operations are available?",
+          "List API capabilities",
+          "Show available functions",
+          "Technical API information"
+        ]
+      },
+      "inputSchema": {
+        "type": "object",
+        "properties": {}
+      },
+      "outputFormat": {
+        "type": "list",
+        "structure": "List of available WSDL operation names"
+      },
+      "sampleRequest": {
+        "name": "regon_get_available_operations",
+        "arguments": {}
+      },
+      "sampleResponse": "Available WSDL Operations:\n- GetValue\n- Zaloguj\n- Wyloguj\n- DaneSzukajPodmioty\n- DanePobierzPelnyRaport\n- DanePobierzRaportZbiorczy"
+    },
+    {
+      "name": "regon_get_last_error_code",
+      "description": "Retrieve the last error code and message from the API session. Useful for debugging and error diagnosis.",
+      "category": "monitoring",
+      "priority": "low",
+      "aiUsage": {
+        "when": "When troubleshooting issues, or user reports errors with previous operations",
+        "examples": [
+          "What was the last error?",
+          "Check for API errors",
+          "Troubleshoot last operation",
+          "Error diagnosis"
+        ]
+      },
+      "inputSchema": {
+        "type": "object",
+        "properties": {}
+      },
+      "outputFormat": {
+        "type": "error_info",
+        "structure": {
+          "errorCode": "Numeric error code (0=no error)",
+          "errorMessage": "Human readable error description"
+        }
+      },
+      "sampleRequest": {
+        "name": "regon_get_last_error_code",
+        "arguments": {}
+      },
+      "sampleResponse": "Last Error Code: 0\nMessage: No messages"
+    }
+  ],
+  "usagePatterns": {
+    "companyLookup": {
+      "description": "Finding company information by various identifiers",
+      "tools": ["regon_search_by_nip", "regon_search_by_regon", "regon_search_by_krs"],
+      "workflow": [
+        "Use regon_search_by_nip if user provides tax number",
+        "Use regon_search_by_krs if user mentions court register",
+        "Use regon_search_by_regon for business registry lookup"
+      ]
+    },
+    "detailedAnalysis": {
+      "description": "Getting comprehensive company information",
+      "tools": ["regon_search_by_nip", "regon_get_full_report"],
+      "workflow": [
+        "First search by identifier to get REGON",
+        "Then use regon_get_full_report with appropriate report type"
+      ]
+    },
+    "bulkProcessing": {
+      "description": "Processing multiple companies at once",
+      "tools": ["regon_search_multiple_nips", "regon_search_multiple_regons9", "regon_search_multiple_krs"],
+      "workflow": [
+        "Use appropriate bulk search based on identifier type",
+        "Process results for further analysis if needed"
+      ]
+    },
+    "serviceMonitoring": {
+      "description": "Checking service health and debugging",
+      "tools": ["regon_get_service_status", "regon_get_data_status", "regon_get_last_error_code"],
+      "workflow": [
+        "Check service status first",
+        "Verify data freshness",
+        "Check for errors if issues occur"
+      ]
+    }
+  },
+  "commonQueries": {
+    "byCompanyName": {
+      "note": "Direct name search not supported - use known identifiers",
+      "alternatives": "Search by NIP, KRS, or REGON if known, or ask user for specific identifier"
+    },
+    "byAddress": {
+      "note": "Address-based search not directly supported",
+      "alternatives": "Use bulk search and filter results, or ask for specific company identifier"
+    },
+    "businessActivities": {
+      "recommendation": "Use regon_get_full_report with BIR11OsPrawnaPkd to get PKD codes",
+      "tools": ["regon_get_full_report"]
+    },
+    "companyStructure": {
+      "recommendation": "Use BIR11OsPrawnaListaJednLokalnych to get local units",
+      "tools": ["regon_get_full_report"]
+    }
+  },
+  "errorHandling": {
+    "invalidIdentifiers": "API returns empty results or error codes",
+    "networkIssues": "Check service status using regon_get_service_status",
+    "dataNotFound": "Verify identifier format and try alternative search methods",
+    "serviceUnavailable": "Use monitoring tools to check service health"
+  },
+  "dataPrivacy": {
+    "note": "This is public business registry data",
+    "scope": "Contains publicly available company information only",
+    "restrictions": "No personal data for individuals, only registered business entities"
+  },
+  "performanceOptimization": {
+    "bulkSearches": "Use bulk search tools for multiple entities",
+    "reportSelection": "Choose specific report types to reduce data transfer",
+    "caching": "Consider caching results for frequently accessed entities"
+  }
+}

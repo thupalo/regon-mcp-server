@@ -1,0 +1,216 @@
+{
+  "name": "RegonAPI MCP Server",
+  "version": "1.0.0",
+  "description": "Model Context Protocol server for accessing Polish GUS REGON database - comprehensive business entity information system",
+  "language": "en",
+  "capabilities": {
+    "tools": true,
+    "resources": false,
+    "prompts": false
+  },
+  "serverInfo": {
+    "name": "regon-api",
+    "version": "1.13.0"
+  },
+  "tools": [
+    {
+      "name": "regon_search_by_nip",
+      "description": "Search for Polish business entities by NIP (Tax Identification Number). Returns comprehensive company information including registration details, address, and business classification.",
+      "category": "search",
+      "priority": "high",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "nip": {
+            "type": "string",
+            "description": "Polish NIP (Tax Identification Number) - 10 digits, hyphens optional"
+          }
+        },
+        "required": ["nip"]
+      }
+    },
+    {
+      "name": "regon_search_by_regon",
+      "description": "Search for Polish business entities by REGON number (9 or 14 digits). Returns detailed company information from the national business registry.",
+      "category": "search",
+      "priority": "high",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "regon": {
+            "type": "string",
+            "description": "9-digit (main unit) or 14-digit (local unit) REGON number"
+          }
+        },
+        "required": ["regon"]
+      }
+    },
+    {
+      "name": "regon_search_by_krs",
+      "description": "Search for Polish companies by KRS (National Court Register) number. Returns legal entity information from court records.",
+      "category": "search",
+      "priority": "high",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "krs": {
+            "type": "string",
+            "description": "10-digit KRS number with leading zeros (e.g., '0000006865')"
+          }
+        },
+        "required": ["krs"]
+      }
+    },
+    {
+      "name": "regon_search_multiple_nips",
+      "description": "Search for multiple Polish companies by NIP numbers in a single request. Efficient for bulk lookups.",
+      "category": "bulk_search",
+      "priority": "medium",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "nips": {
+            "type": "array",
+            "items": {"type": "string"},
+            "description": "Array of 10-digit NIP numbers"
+          }
+        },
+        "required": ["nips"]
+      }
+    },
+    {
+      "name": "regon_search_multiple_regons9",
+      "description": "Search for multiple Polish companies by 9-digit REGON numbers in a single request. Optimized for bulk operations.",
+      "category": "bulk_search",
+      "priority": "medium",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "regons": {
+            "type": "array",
+            "items": {"type": "string"},
+            "description": "Array of 9-digit REGON numbers"
+          }
+        },
+        "required": ["regons"]
+      }
+    },
+    {
+      "name": "regon_search_multiple_krs",
+      "description": "Search for multiple Polish companies by KRS numbers in a single request. Efficient for processing multiple court registered entities.",
+      "category": "bulk_search",
+      "priority": "medium",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "krs_numbers": {
+            "type": "array",
+            "items": {"type": "string"},
+            "description": "Array of 10-digit KRS numbers"
+          }
+        },
+        "required": ["krs_numbers"]
+      }
+    },
+    {
+      "name": "regon_get_full_report",
+      "description": "Get detailed report for a company by REGON number. Provides comprehensive business information including financial data and operational details.",
+      "category": "detailed_info",
+      "priority": "medium",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "regon": {
+            "type": "string",
+            "description": "9-digit (main unit) or 14-digit (local unit) REGON number"
+          },
+          "report_name": {
+            "type": "string",
+            "description": "Report type from available options",
+            "enum": [
+              "BIR11OsFizycznaDaneOgolne",
+              "BIR11OsFizycznaDzialalnoscCeidg", 
+              "BIR11OsFizycznaDzialalnoscRolnicza",
+              "BIR11OsFizycznaDzialalnoscPozostala",
+              "BIR11OsFizycznaListaJednLokalnych",
+              "BIR11JednLokalnaOsFizycznej",
+              "BIR11OsPrawna",
+              "BIR11OsPrawnaDzialalnoscSkreslona",
+              "BIR11OsPrawnaPkd",
+              "BIR11OsPrawnaListaJednLokalnych",
+              "BIR11JednLokalnaOsPrawnej",
+              "BIR11TypPodmiotu"
+            ]
+          }
+        },
+        "required": ["regon", "report_name"]
+      }
+    },
+    {
+      "name": "regon_get_service_status",
+      "description": "Check the status of the REGON service. Returns service availability and health information.",
+      "category": "monitoring",
+      "priority": "low",
+      "inputSchema": {
+        "type": "object",
+        "properties": {},
+        "additionalProperties": false
+      }
+    },
+    {
+      "name": "regon_get_data_status",
+      "description": "Get information about data status and last update from the REGON database.",
+      "category": "monitoring",
+      "priority": "low",
+      "inputSchema": {
+        "type": "object",
+        "properties": {},
+        "additionalProperties": false
+      }
+    },
+    {
+      "name": "regon_get_last_error_code",
+      "description": "Get the last error code from the REGON service for troubleshooting.",
+      "category": "debugging",
+      "priority": "low",
+      "inputSchema": {
+        "type": "object",
+        "properties": {},
+        "additionalProperties": false
+      }
+    },
+    {
+      "name": "regon_get_last_error_message",
+      "description": "Get the last error message from the REGON service for detailed error information.",
+      "category": "debugging",
+      "priority": "low",
+      "inputSchema": {
+        "type": "object",
+        "properties": {},
+        "additionalProperties": false
+      }
+    },
+    {
+      "name": "regon_get_session_status",
+      "description": "Check the current session status with the REGON API service.",
+      "category": "monitoring",
+      "priority": "low",
+      "inputSchema": {
+        "type": "object",
+        "properties": {},
+        "additionalProperties": false
+      }
+    },
+    {
+      "name": "regon_get_available_operations",
+      "description": "Get list of available operations from the REGON service for capability discovery.",
+      "category": "info",
+      "priority": "low",
+      "inputSchema": {
+        "type": "object",
+        "properties": {},
+        "additionalProperties": false
+      }
+    }
+  ]
+}

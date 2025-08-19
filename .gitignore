@@ -1,0 +1,54 @@
+# Environment and secrets
+.env
+.env.local
+*.env
+
+# Virtual environment
+.venv/
+venv/
+env/
+
+# Python cache
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+*.so
+
+# IDE files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS files
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Logs and outputs
+*.log
+out*.txt
+*_output*.txt
+
+# Testing artifacts
+.pytest_cache/
+.coverage
+htmlcov/
+
+# Build artifacts
+build/
+dist/
+*.egg-info/
+
+# Temporary files
+temp/
+tmp/
+*.tmp
+
+# Project specific
+basic_example_output_utf8.txt
+regon_mcp_server_errors.log
+test_pythonioencoding_output.txt

@@ -1,0 +1,62 @@
+{
+  "mcpServers": {
+    "regon-api-test": {
+      "command": "python",
+      "args": [
+        "regon_mcp_server/server.py"
+      ],
+      "env": {
+        "LOG_LEVEL": "INFO",
+        "PYTHONIOENCODING": "utf-8"
+      }
+    },
+    "regon-api-production": {
+      "command": "python", 
+      "args": [
+        "regon_mcp_server/server.py",
+        "--production",
+        "--log-level",
+        "WARNING"
+      ],
+      "env": {
+        "LOG_LEVEL": "WARNING",
+        "PYTHONIOENCODING": "utf-8"
+      }
+    },
+    "regon-api-debug": {
+      "command": "python",
+      "args": [
+        "regon_mcp_server/server.py",
+        "--log-level",
+        "DEBUG"
+      ],
+      "env": {
+        "LOG_LEVEL": "DEBUG",
+        "PYTHONIOENCODING": "utf-8"
+      }
+    },
+    "regon-api-http": {
+      "command": "python",
+      "args": [
+        "regon_mcp_server/server_http.py",
+        "--port",
+        "8001"
+      ],
+      "env": {
+        "LOG_LEVEL": "INFO",
+        "PYTHONIOENCODING": "utf-8"
+      }
+    },
+    "regon-api-venv": {
+      "command": ".venv/Scripts/python.exe",
+      "args": [
+        "regon_mcp_server/server.py",
+        "--production"
+      ],
+      "env": {
+        "PYTHONIOENCODING": "utf-8",
+        "LOG_LEVEL": "INFO"
+      }
+    }
+  }
+}
