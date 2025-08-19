@@ -1,16 +1,26 @@
 # RegonAPI MCP Server
 
+[![GitHub license](https://img.shields.io/github/license/thupalo/regon-mcp-server)](https://github.com/thupalo/regon-mcp-server/blob/main/LICENSE)
+[![Python version](https://img.shields.io/badge/python-3.8%2B-blue)](https://www.python.org/downloads/)
+[![MCP Protocol](https://img.shields.io/badge/MCP-Model%20Context%20Protocol-green)](https://modelcontextprotocol.io/)
+[![FastAPI](https://img.shields.io/badge/FastAPI-HTTP%20API-red)](https://fastapi.tiangolo.com/)
+
 An MCP (Model Context Protocol) server that provides access to the Polish GUS REGON Database through the RegonAPI Python module. This server allows you to search for business entity information and download detailed reports.
 
-## Features
+> 🇵🇱 **Polish Business Data**: Access official Polish business registry data with UTF-8 support for Polish characters (ą, ć, ę, ł, ń, ó, ś, ź, ż)
 
-- Search business entities by NIP (Tax Identification Number)
-- Search business entities by REGON number (9 or 14 digits)
-- Search business entities by KRS (National Court Register) number
-- Support for bulk searches (multiple entities at once)
-- Download full reports with detailed business information
-- Service status monitoring
-- Error handling and logging
+## ✨ Features
+
+- 🔍 **Search business entities** by NIP (Tax Identification Number)
+- 📋 **Search business entities** by REGON number (9 or 14 digits)  
+- 🏢 **Search business entities** by KRS (National Court Register) number
+- 📊 **Support for bulk searches** (multiple entities at once)
+- 📈 **Download full reports** with detailed business information
+- 💚 **Service status monitoring** and health checks
+- 🛡️ **Comprehensive error handling** and logging
+- 🌐 **Dual protocol support**: Stdio MCP + HTTP REST API
+- 🔧 **Tool customization** with JSON configurations
+- 🇵🇱 **UTF-8 encoding** for Polish characters
 
 ## 📚 Documentation
 
@@ -24,6 +34,57 @@ An MCP (Model Context Protocol) server that provides access to the Polish GUS RE
 - **[docs/SERVER_HARDENING_SUMMARY.md](docs/SERVER_HARDENING_SUMMARY.md)** - 🛡️ Production hardening guide
 
 **👉 For first-time setup, start with [docs/QUICK_CONFIG.md](docs/QUICK_CONFIG.md)**
+
+## 🚀 Quick Start
+
+1. **Clone the repository:**
+   ```bash
+   git clone https://github.com/thupalo/regon-mcp-server.git
+   cd regon-mcp-server
+   ```
+
+2. **Setup environment:**
+   ```bash
+   python -m venv .venv
+   .venv\Scripts\activate  # Windows
+   # source .venv/bin/activate  # Linux/Mac
+   pip install -r requirements.txt
+   ```
+
+3. **Configure API key:**
+   ```bash
+   cp .env.example .env
+   # Edit .env file with your GUS API key
+   ```
+
+4. **Start the server:**
+   ```bash
+   # MCP Stdio server
+   python regon_mcp_server/server.py
+   
+   # HTTP REST API server  
+   python regon_mcp_server/server_http.py --port 8000
+   ```
+
+## 📁 Project Structure
+
+```
+regon-mcp-server/
+├── 📦 regon_mcp_server/     # Core server implementation
+│   ├── server.py            # Main MCP stdio server
+│   ├── server_http.py       # HTTP REST API wrapper
+│   ├── error_handling.py    # Comprehensive error handling
+│   └── tool_config.py       # Tool configuration loader
+├── ⚙️ config/               # Tool customization files
+│   ├── tools_default.json   # Default tool set
+│   ├── tools_polish.json    # Polish language tools
+│   ├── tools_minimal.json   # Minimal tool set
+│   └── tools_detailed.json  # Detailed tool descriptions
+├── 📚 docs/                 # Complete documentation
+├── 🧪 tests/                # Comprehensive test suite
+├── 📝 examples/             # Usage examples and utilities
+└── 🚀 start_*.bat          # Quick start scripts
+```
 
 ## Installation
 
