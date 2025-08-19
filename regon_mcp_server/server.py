@@ -537,7 +537,7 @@ async def handle_call_tool(name: str, arguments: Dict[str, Any]) -> List[TextCon
         
         name = sanitize_string(name, 100)
         
-        if not arguments or not isinstance(arguments, dict):
+        if arguments is None or not isinstance(arguments, dict):
             return create_error_response(ValidationError("Arguments must be a dictionary"))
         
         # Sanitize all string arguments
