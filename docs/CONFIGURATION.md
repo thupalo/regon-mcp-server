@@ -2,6 +2,8 @@
 
 This guide covers how to configure the REGON MCP Server for different environments and applications, including VS Code, LM Studio, and Claude.ai.
 
+> **🆕 2025 Update**: VS Code MCP configuration now uses `.vscode/mcp.json` instead of `settings.json`. This guide has been updated to reflect the new format.
+
 ## 📋 Table of Contents
 
 - [API Key Setup](#-api-key-setup)
@@ -246,12 +248,13 @@ TEST_API_KEY=your_test_key
 
 ### MCP Client Configuration with Tool Customization
 
-#### VS Code with Polish Tools
+#### VS Code with Polish Tools (2025 Format)
+Create `.vscode/mcp.json`:
 ```json
 {
-  "mcp.servers": {
+  "mcpServers": {
     "regon-api-polish": {
-      "command": "python",
+      "command": ".venv/Scripts/python.exe",
       "args": [
         "regon_mcp_server/server.py",
         "--tools-config", "polish",
@@ -349,9 +352,123 @@ For detailed information about tool customization, see: [TOOL_CONFIGURATION.md](
 3. Search for "MCP" or "Model Context Protocol"
 4. Install the official MCP extension
 
-### 2. Configure MCP Settings
+### 2. Workspace Configuration (2025 Format)
 
-Add to your VS Code `settings.json`:
+Create `.vscode/mcp.json` in your project workspace:
+
+```json
+{
+  "mcpServers": {
+    "regon-api": {
+      "command": ".venv/Scripts/python.exe",
+      "args": [
+        "regon_mcp_server/server.py",
+        "--production"
+      ],
+      "env": {
+        "PYTHONIOENCODING": "utf-8",
+        "LOG_LEVEL": "INFO"
+      }
+    }
+  }
+}
+```
+
+### 3. Advanced Workspace Configurations
+
+#### Production Setup
+Create `.vscode/mcp.json` for production use:
+
+```json
+{
+  "mcpServers": {
+    "regon-api-production": {
+      "command": ".venv/Scripts/python.exe",
+      "args": [
+        "regon_mcp_server/server.py",
+        "--production",
+        "--tools-config", "polish",
+        "--log-level", "WARNING"
+      ],
+      "env": {
+        "PYTHONIOENCODING": "utf-8",
+        "LOG_LEVEL": "WARNING"
+      }
+    }
+  }
+}
+```
+
+#### Development Setup
+Create `.vscode/mcp.json` for development:
+
+```json
+{
+  "mcpServers": {
+    "regon-api-dev": {
+      "command": ".venv/Scripts/python.exe",
+      "args": [
+        "regon_mcp_server/server.py",
+        "--tools-config", "default",
+        "--log-level", "DEBUG"
+      ],
+      "env": {
+        "PYTHONIOENCODING": "utf-8",
+        "LOG_LEVEL": "DEBUG"
+      }
+    }
+  }
+}
+```
+
+#### Multi-Server Setup
+Configure multiple REGON servers for different purposes:
+
+```json
+{
+  "mcpServers": {
+    "regon-test": {
+      "command": ".venv/Scripts/python.exe",
+      "args": [
+        "regon_mcp_server/server.py",
+        "--tools-config", "minimal"
+      ],
+      "env": {
+        "PYTHONIOENCODING": "utf-8"
+      }
+    },
+    "regon-production": {
+      "command": ".venv/Scripts/python.exe",
+      "args": [
+        "regon_mcp_server/server.py",
+        "--production",
+        "--tools-config", "polish"
+      ],
+      "env": {
+        "PYTHONIOENCODING": "utf-8"
+      }
+    },
+    "regon-http": {
+      "command": ".venv/Scripts/python.exe",
+      "args": [
+        "regon_mcp_server/server_http.py",
+        "--port", "8001",
+        "--tools-config", "detailed"
+      ],
+      "env": {
+        "PYTHONIOENCODING": "utf-8"
+      }
+    }
+  }
+}
+```
+
+### 4. Legacy Configuration (Pre-2025)
+
+> **Note**: The following format is deprecated. Use `.vscode/mcp.json` instead.
+
+<details>
+<summary>Click to view legacy settings.json format</summary>
 
 ```json
 {
@@ -371,20 +488,30 @@ Add to your VS Code `settings.json`:
   }
 }
 ```
+</details>
+```
 
-### 3. Workspace Configuration
+```
+</details>
 
-Create `.vscode/settings.json` in your project:
+### 5. Validation and Testing
 
+After creating your `.vscode/mcp.json` file, verify the configuration:
+
+1. **Check file location**: Ensure `.vscode/mcp.json` is in your workspace root
+2. **Validate JSON syntax**: Use VS Code's JSON validation or online JSON validators
+3. **Test server startup**: Open VS Code command palette (Ctrl+Shift+P) and run "MCP: Restart Servers"
+4. **Check MCP panel**: Look for the REGON server in VS Code's MCP panel
+5. **Test functionality**: Try using REGON tools in your VS Code AI assistant
+
+#### Quick Validation Example
+Create a minimal `.vscode/mcp.json` for testing:
 ```json
 {
-  "mcp.servers": {
-    "regon-api": {
+  "mcpServers": {
+    "regon-test": {
       "command": ".venv/Scripts/python.exe",
-      "args": [
-        "regon_mcp_server/server.py",
-        "--production"
-      ],
+      "args": ["regon_mcp_server/server.py"],
       "env": {
         "PYTHONIOENCODING": "utf-8"
       }
@@ -392,6 +519,12 @@ Create `.vscode/settings.json` in your project:
   }
 }
 ```
+
+#### Troubleshooting VS Code MCP
+- **Server not starting**: Check Python path and virtual environment activation
+- **Import errors**: Verify dependencies are installed (`pip install -r requirements.txt`)
+- **Encoding issues**: Ensure `PYTHONIOENCODING=utf-8` is set
+- **Permission errors**: Check file permissions and virtual environment access
 
 ## 🎯 LM Studio Configuration
 
