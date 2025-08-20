@@ -19,11 +19,9 @@ Welcome to the comprehensive documentation for the RegonAPI MCP Server - a robus
 ### 🔧 Implementation Details
 - **[TOOLS_CONFIG_IMPLEMENTATION.md](TOOLS_CONFIG_IMPLEMENTATION.md)** - Technical implementation of tool customization
 - **[PROJECT_SUMMARY.md](PROJECT_SUMMARY.md)** - Complete project overview and architecture
-- **[CONSOLIDATION_SUMMARY.md](CONSOLIDATION_SUMMARY.md)** - Project evolution and consolidation history
 
 ### 🧪 Development & Testing
 - **[EXAMPLES_COMPLETION.md](EXAMPLES_COMPLETION.md)** - Example scripts and usage patterns
-- **[DEBUG_ANALYSIS.md](DEBUG_ANALYSIS.md)** - Debugging and troubleshooting guide
 
 ## 🎯 Quick Navigation
 
@@ -40,7 +38,7 @@ Welcome to the comprehensive documentation for the RegonAPI MCP Server - a robus
 ### For Developers
 1. Study [TOOLS_CONFIG_IMPLEMENTATION.md](TOOLS_CONFIG_IMPLEMENTATION.md) for technical details
 2. Review [PROJECT_SUMMARY.md](PROJECT_SUMMARY.md) for architecture overview
-3. Use [DEBUG_ANALYSIS.md](DEBUG_ANALYSIS.md) for troubleshooting
+3. Check examples/ folder for usage patterns and testing
 
 ## 🌟 Key Features Documented
 
@@ -79,9 +77,8 @@ docs/
 ├── SERVER_HARDENING_SUMMARY.md     # Production hardening guide
 ├── TOOLS_CONFIG_IMPLEMENTATION.md  # Technical implementation details
 ├── PROJECT_SUMMARY.md              # Project architecture overview
-├── CONSOLIDATION_SUMMARY.md        # Project evolution history
-├── EXAMPLES_COMPLETION.md          # Usage examples and patterns
-└── DEBUG_ANALYSIS.md               # Debugging and troubleshooting
+└── EXAMPLES_COMPLETION.md          # Usage examples and patterns
+
 ```
 
 ## 🔗 Related Resources
@@ -106,8 +103,7 @@ docs/
 1. **Configuration Issues**: Check [CONFIGURATION.md](CONFIGURATION.md) and [QUICK_CONFIG.md](QUICK_CONFIG.md)
 2. **Tool Customization**: See [TOOL_CONFIGURATION.md](TOOL_CONFIGURATION.md)
 3. **HTTP API**: Review [HTTP_SERVER_README.md](HTTP_SERVER_README.md)
-4. **Debugging**: Use [DEBUG_ANALYSIS.md](DEBUG_ANALYSIS.md)
-5. **Production Deployment**: Follow [SERVER_HARDENING_SUMMARY.md](SERVER_HARDENING_SUMMARY.md)
+4. **Production Deployment**: Follow [SERVER_HARDENING_SUMMARY.md](SERVER_HARDENING_SUMMARY.md)
 
 ## 📝 Documentation Updates
 

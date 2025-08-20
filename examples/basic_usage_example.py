@@ -253,28 +253,28 @@ async def main():
 if __name__ == "__main__":
     print("Starting RegonAPI MCP Server Basic Example...")
     
-    # Also write output to a UTF-8 encoded file
-    output_file = "basic_example_output_utf8.txt"
+    # # Also write output to a UTF-8 encoded file
+    # output_file = "basic_example_output_utf8.txt"
     
-    # Redirect stdout to capture output
-    import io
-    from contextlib import redirect_stdout
+    # # Redirect stdout to capture output
+    # import io
+    # from contextlib import redirect_stdout
     
-    # Create a StringIO object to capture output
-    captured_output = io.StringIO()
+    # # Create a StringIO object to capture output
+    # captured_output = io.StringIO()
     
     try:
-        with redirect_stdout(captured_output):
-            asyncio.run(main())
+        #with redirect_stdout(captured_output):
+        asyncio.run(main())
         
-        # Get the captured output
-        output_content = captured_output.getvalue()
+        # # Get the captured output
+        # output_content = captured_output.getvalue()
         
-        # Write to file with UTF-8 encoding
-        with open(output_file, 'w', encoding='utf-8') as f:
-            f.write(output_content)
+        # # Write to file with UTF-8 encoding
+        # with open(output_file, 'w', encoding='utf-8') as f:
+        #     f.write(output_content)
         
-        print(f"[UTF8] Output also saved to {output_file} with proper UTF-8 encoding")
+        # print(f"[UTF8] Output also saved to {output_file} with proper UTF-8 encoding")
         
     except KeyboardInterrupt:
         print("\n[STOP] Example interrupted by user")

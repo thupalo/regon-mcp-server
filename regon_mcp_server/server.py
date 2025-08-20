@@ -622,6 +622,15 @@ async def handle_search_by_nip(arguments: Dict[str, Any], api: RegonAPI) -> List
         if not result:
             return [TextContent(type="text", text="ℹ️ No data found for the specified NIP number.")]
         
+        # Transform 'Typ' field values to descriptive Polish text
+        if isinstance(result, list):
+            for item in result:
+                if isinstance(item, dict) and 'Typ' in item:
+                    if item['Typ'] == 'P':
+                        item['Typ'] = "osoba prawna"
+                    elif item['Typ'] == 'F':
+                        item['Typ'] = "osoba fizyczna"
+        
         return [TextContent(type="text", text=json.dumps(result, indent=2, ensure_ascii=False))]
         
     except Exception as e:
@@ -644,6 +653,15 @@ async def handle_search_by_regon(arguments: Dict[str, Any], api: RegonAPI) -> Li
         if not result:
             return [TextContent(type="text", text="ℹ️ No data found for the specified REGON number.")]
         
+        # Transform 'Typ' field values to descriptive Polish text
+        if isinstance(result, list):
+            for item in result:
+                if isinstance(item, dict) and 'Typ' in item:
+                    if item['Typ'] == 'P':
+                        item['Typ'] = "osoba prawna"
+                    elif item['Typ'] == 'F':
+                        item['Typ'] = "osoba fizyczna"
+        
         return [TextContent(type="text", text=json.dumps(result, indent=2, ensure_ascii=False))]
         
     except Exception as e:
@@ -665,6 +683,15 @@ async def handle_search_by_krs(arguments: Dict[str, Any], api: RegonAPI) -> List
         
         if not result:
             return [TextContent(type="text", text="ℹ️ No data found for the specified KRS number.")]
+        
+        # Transform 'Typ' field values to descriptive Polish text
+        if isinstance(result, list):
+            for item in result:
+                if isinstance(item, dict) and 'Typ' in item:
+                    if item['Typ'] == 'P':
+                        item['Typ'] = "osoba prawna"
+                    elif item['Typ'] == 'F':
+                        item['Typ'] = "osoba fizyczna"
         
         return [TextContent(type="text", text=json.dumps(result, indent=2, ensure_ascii=False))]
         
@@ -696,6 +723,15 @@ async def handle_search_multiple_nips(arguments: Dict[str, Any], api: RegonAPI) 
         logger.debug(f"Searching multiple NIPs: {valid_nips}")
         result = api.searchData(nips=valid_nips)
         
+        # Transform 'Typ' field values to descriptive Polish text
+        if isinstance(result, list):
+            for item in result:
+                if isinstance(item, dict) and 'Typ' in item:
+                    if item['Typ'] == 'P':
+                        item['Typ'] = "osoba prawna"
+                    elif item['Typ'] == 'F':
+                        item['Typ'] = "osoba fizyczna"
+        
         return [TextContent(type="text", text=json.dumps(result, indent=2, ensure_ascii=False))]
         
     except Exception as e:
@@ -725,6 +761,15 @@ async def handle_search_multiple_regons9(arguments: Dict[str, Any], api: RegonAP
         
         logger.debug(f"Searching multiple REGONs: {valid_regons}")
         result = api.searchData(regons9=valid_regons)
+        
+        # Transform 'Typ' field values to descriptive Polish text
+        if isinstance(result, list):
+            for item in result:
+                if isinstance(item, dict) and 'Typ' in item:
+                    if item['Typ'] == 'P':
+                        item['Typ'] = "osoba prawna"
+                    elif item['Typ'] == 'F':
+                        item['Typ'] = "osoba fizyczna"
         
         return [TextContent(type="text", text=json.dumps(result, indent=2, ensure_ascii=False))]
         
@@ -756,6 +801,15 @@ async def handle_search_multiple_krs(arguments: Dict[str, Any], api: RegonAPI) -
         logger.debug(f"Searching multiple KRS: {valid_krs}")
         result = api.searchData(krss=valid_krs)
         
+        # Transform 'Typ' field values to descriptive Polish text
+        if isinstance(result, list):
+            for item in result:
+                if isinstance(item, dict) and 'Typ' in item:
+                    if item['Typ'] == 'P':
+                        item['Typ'] = "osoba prawna"
+                    elif item['Typ'] == 'F':
+                        item['Typ'] = "osoba fizyczna"
+        
         return [TextContent(type="text", text=json.dumps(result, indent=2, ensure_ascii=False))]
         
     except Exception as e:
@@ -782,6 +836,15 @@ async def handle_get_full_report(arguments: Dict[str, Any], api: RegonAPI) -> Li
         
         if not result:
             return [TextContent(type="text", text="ℹ️ No report data available for the specified parameters.")]
+        
+        # Transform 'Typ' field values for BIR11TypPodmiotu report
+        if report_name == "BIR11TypPodmiotu" and isinstance(result, list):
+            for item in result:
+                if isinstance(item, dict) and 'Typ' in item:
+                    if item['Typ'] == 'P':
+                        item['Typ'] = "osoba prawna"
+                    elif item['Typ'] == 'F':
+                        item['Typ'] = "osoba fizyczna"
         
         return [TextContent(type="text", text=json.dumps(result, indent=2, ensure_ascii=False))]
         
