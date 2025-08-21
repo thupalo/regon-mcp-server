@@ -1,0 +1,48 @@
+[tool.pytest.ini_options]
+# Pytest configuration for REGON MCP Server
+
+# Test discovery
+testpaths = ["tests"]
+python_files = ["test_*.py", "*_test.py"]
+python_classes = ["Test*"]
+python_functions = ["test_*"]
+
+# Async support
+asyncio_mode = "auto"
+
+# Output and reporting with coverage
+addopts = [
+    "-v",                           # Verbose output
+    "--tb=short",                   # Shorter traceback format
+    "--strict-markers",             # Treat unknown markers as errors
+    "--strict-config",              # Treat config warnings as errors
+    "--color=yes",                  # Colored output
+    "--durations=10",               # Show 10 slowest tests
+    "--showlocals",                 # Show local variables in tracebacks
+    "--cov=regon_mcp_server",       # Coverage for main package
+    "--cov-report=term-missing",    # Show missing lines in terminal
+    "--cov-report=html:htmlcov",    # Generate HTML coverage report
+    "--cov-report=xml",             # Generate XML coverage report
+    "--cov-fail-under=80",          # Fail if coverage below 80%
+]
+
+# Test markers
+markers = [
+    "unit: Unit tests that don't require external dependencies",
+    "integration: Integration tests that may require external services",
+    "http: Tests for HTTP server functionality",
+    "stdio: Tests for stdio MCP server functionality",
+    "slow: Tests that take longer to run",
+    "network: Tests that require network access",
+    "api: Tests that require REGON API access",
+]
+
+# Test filtering
+filterwarnings = [
+    "ignore::DeprecationWarning",
+    "ignore::PendingDeprecationWarning",
+    "ignore:.*unclosed.*:ResourceWarning",
+]
+
+# Minimum Python version
+minversion = "3.8"

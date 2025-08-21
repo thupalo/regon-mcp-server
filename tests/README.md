@@ -1,20 +1,183 @@
 # REGON MCP Server Tests
 
-This folder contains comprehensive tests for both the stdio and HTTP MCP servers.
+This folder contains comprehensive tests for both the stdio and HTTP MCP servers using both traditional test scripts and modern pytest framework.
 
-## 🧪 Test Scripts
+## 🧪 Test Framework
 
-### Core Tests
-- **`test_stdio_server.py`** - Tests the main stdio MCP server functionality
-- **`test_http_server.py`** - Tests the HTTP wrapper server (requires server to be running)
-- **`test_mcp_protocol.py`** - Tests MCP protocol compliance with JSON-RPC messages
+The project now supports **two testing approaches**:
+
+1. **Pytest Framework** (recommended) - Modern, comprehensive testing with fixtures, markers, and coverage
+2. **Traditional Scripts** - Legacy test scripts for manual testing and CI/CD
+
+## ✅ Quick Start - Working Tests
+
+For immediate testing with verified working tests:
+
+```bash
+# Run the simple test runner (15 passing tests)
+python tests/run_simple_tests.py
+
+# Or run specific working tests directly
+python -m pytest tests/test_error_handling_simple.py -v
+```
+
+This will run **15 passing tests** covering:
+- RetryMechanism functionality
+- Input validation  
+- String sanitization
+- Custom exception classes
+
+## 📁 Test Files
+
+### Pytest Test Suites
+- **`test_stdio_server_pytest.py`** - Comprehensive pytest tests for stdio MCP server
+- **`test_http_server_pytest.py`** - Comprehensive pytest tests for HTTP server with fixtures
+- **`test_error_handling_pytest.py`** - Unit tests for error handling and retry mechanisms
+- **`conftest.py`** - Pytest configuration, fixtures, and test utilities
+
+### Legacy Test Scripts
+- **`test_stdio_server.py`** - Original stdio MCP server tests
+- **`test_http_server.py`** - Original HTTP wrapper server tests  
+- **`test_mcp_protocol.py`** - MCP protocol compliance tests
 
 ### Test Runners
-- **`run_all_tests.py`** - Runs all available tests in sequence
-- **`run_all_tests.bat`** - Windows batch file to run all tests
-- **`test_http_server.bat`** - Windows batch file to run HTTP tests with instructions
+- **`run_pytest.py`** - Advanced pytest runner with filtering and reporting options
+- **`run_pytest.bat`** - Windows batch file for pytest execution
+- **`run_all_tests.py`** - Legacy test runner for all tests
+- **`run_all_tests.bat`** - Windows batch file for legacy tests
+- **`run_simple_tests.py`** - **NEW** Simple runner for verified working tests
 
-## 🚀 Quick Start
+### Working Test Files ✅
+- **`test_error_handling_simple.py`** - **15 passing tests** for error handling functionality
+  - RetryMechanism class tests (4 tests)
+  - Input validation tests (3 tests) 
+  - String sanitization tests (3 tests)
+  - Custom exception tests (5 tests)
+  - **Coverage**: 37% of error_handling.py module
+
+## 🚀 Quick Start with Pytest (Recommended)
+
+### Prerequisites
+Install pytest dependencies:
+```bash
+pip install pytest pytest-asyncio pytest-cov pytest-mock pytest-xdist
+```
+
+### Basic Usage
+
+```bash
+# Run all tests
+python tests\run_pytest.py
+
+# Run only unit tests (fast)
+python tests\run_pytest.py --unit
+
+# Run only integration tests
+python tests\run_pytest.py --integration
+
+# Run HTTP server tests only
+python tests\run_pytest.py --http
+
+# Run stdio server tests only  
+python tests\run_pytest.py --stdio
+
+# Run with coverage report
+python tests\run_pytest.py --coverage
+
+# Run fast tests only (skip slow tests)
+python tests\run_pytest.py --fast
+```
+
+### Windows Batch File Usage
+
+```batch
+# Run all tests
+tests\run_pytest.bat
+
+# Run specific test types
+tests\run_pytest.bat unit
+tests\run_pytest.bat integration
+tests\run_pytest.bat http
+tests\run_pytest.bat coverage
+tests\run_pytest.bat fast
+```
+
+## 🎯 Test Categories and Markers
+
+### Test Markers
+- **`@pytest.mark.unit`** - Fast unit tests that don't require external dependencies
+- **`@pytest.mark.integration`** - Integration tests that may require services
+- **`@pytest.mark.http`** - HTTP server specific tests
+- **`@pytest.mark.stdio`** - Stdio server specific tests
+- **`@pytest.mark.slow`** - Tests that take longer to run
+- **`@pytest.mark.network`** - Tests requiring network access
+- **`@pytest.mark.api`** - Tests requiring REGON API access
+
+### Running Specific Test Categories
+
+```bash
+# Run only fast unit tests
+pytest -m "unit and not slow"
+
+# Run integration tests for HTTP server
+pytest -m "integration and http"
+
+# Run all tests except network-dependent ones
+pytest -m "not network"
+
+# Run API tests (requires API key)
+pytest -m "api"
+```
+
+## 📊 Coverage Reporting
+
+Generate comprehensive coverage reports:
+
+```bash
+# HTML coverage report
+python tests\run_pytest.py --coverage
+
+# View coverage report
+# Open htmlcov\index.html in browser
+
+# Terminal coverage report only
+pytest --cov=regon_mcp_server --cov-report=term-missing
+```
+
+## 🛠️ Advanced Pytest Usage
+
+### Parallel Test Execution
+```bash
+# Run tests in parallel
+pytest -n auto
+
+# Run with specific number of workers
+pytest -n 4
+```
+
+### Verbose Output and Debugging
+```bash
+# Verbose output
+pytest -v
+
+# Show local variables in tracebacks
+pytest --tb=long --showlocals
+
+# Run specific test file
+pytest tests/test_stdio_server_pytest.py
+
+# Run specific test method
+pytest tests/test_stdio_server_pytest.py::TestStdioMCPServer::test_server_startup
+```
+
+### Test Configuration
+The project includes comprehensive pytest configuration in:
+- **`pytest.ini`** - Main pytest configuration
+- **`pyproject.toml`** - Alternative configuration format
+
+## 🔧 Legacy Test Scripts
+
+### Run All Legacy Tests
 
 ### Run All Tests
 ```bash
