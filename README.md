@@ -2,8 +2,18 @@
 
 [![GitHub license](https://img.shields.io/github/license/thupalo/regon-mcp-server)](https://github.com/thupalo/regon-mcp-server/blob/main/LICENSE)
 [![Python version](https://img.shields.io/badge/python-3.8%2B-blue)](https://www.python.org/downloads/)
+[![GitHub release](https://img.shields.io/github/v/release/thupalo/regon-mcp-server?include_prereleases)](https://github.com/thupalo/regon-mcp-server/releases)
+[![GitHub issues](https://img.shields.io/github/issues/thupalo/regon-mcp-server)](https://github.com/thupalo/regon-mcp-server/issues)
+[![GitHub stars](https://img.shields.io/github/stars/thupalo/regon-mcp-server)](https://github.com/thupalo/regon-mcp-server/stargazers)
+[![GitHub forks](https://img.shields.io/github/forks/thupalo/regon-mcp-server)](https://github.com/thupalo/regon-mcp-server/network)
+[![GitHub last commit](https://img.shields.io/github/last-commit/thupalo/regon-mcp-server)](https://github.com/thupalo/regon-mcp-server/commits/main)
+[![Code size](https://img.shields.io/github/languages/code-size/thupalo/regon-mcp-server)](https://github.com/thupalo/regon-mcp-server)
+[![Tests](https://img.shields.io/badge/tests-pytest-green)](https://github.com/thupalo/regon-mcp-server/tree/main/tests)
+[![Coverage](https://img.shields.io/badge/coverage-pytest--cov-blue)](https://github.com/thupalo/regon-mcp-server/tree/main/tests)
 [![MCP Protocol](https://img.shields.io/badge/MCP-Model%20Context%20Protocol-green)](https://modelcontextprotocol.io/)
 [![FastAPI](https://img.shields.io/badge/FastAPI-HTTP%20API-red)](https://fastapi.tiangolo.com/)
+[![RegonAPI](https://img.shields.io/badge/RegonAPI-1.3.1-orange)](https://github.com/rolzwy7/RegonAPI)
+[![Polish Business Data](https://img.shields.io/badge/🇵🇱-Polish%20Business%20Data-red)](https://api.stat.gov.pl/)
 
 An MCP (Model Context Protocol) server that provides access to the Polish GUS REGON Database through the RegonAPI Python module. This server allows you to search for business entity information and download detailed reports.
 
