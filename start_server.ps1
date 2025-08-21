@@ -26,6 +26,6 @@ if (-not (Test-Path ".env")) {
 }
 
 Write-Host "Starting server..." -ForegroundColor Cyan
-& ".venv\Scripts\python.exe" "regon_mcp_server.py"
+& ".venv\Scripts\python.exe" "regon_mcp_server\server_http.py"
 
 Read-Host "Press Enter to exit"

@@ -94,12 +94,31 @@ python regon_mcp_server/server.py --tools-config polish --production
 ```
 
 #### MCP Client Integration
+
+**VS Code 2025 Format (.vscode/mcp.json):**
 ```json
-// VS Code settings.json
 {
   "mcpServers": {
     "regon": {
       "command": "python",
+      "args": [
+        "C:/path/to/regon_mcp_server/server.py",
+        "--tools-config", "polish"
+      ],
+      "env": {
+        "TEST_API_KEY": "your_test_key"
+      }
+    }
+  }
+}
+```
+
+**Legacy VS Code Format (settings.json) - For older versions:**
+```json
+{
+  "mcpServers": {
+    "regon": {
+      "command": "python", 
       "args": [
         "C:/path/to/regon_mcp_server/server.py",
         "--tools-config", "polish"

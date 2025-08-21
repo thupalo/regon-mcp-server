@@ -10,6 +10,14 @@ import logging
 from pathlib import Path
 from typing import Dict, List, Any, Optional
 
+import sys
+
+def app_dir() -> Path:
+    # Directory of the running app (exe dir when frozen, script dir otherwise)
+    if getattr(sys, "frozen", False):      # PyInstaller sets this
+        return Path(sys.executable).resolve().parent
+    return Path(__file__).resolve().parent
+
 logger = logging.getLogger(__name__)
 
 class ToolConfigLoader:
@@ -23,6 +31,12 @@ class ToolConfigLoader:
             config_dir: Directory containing configuration files
         """
         self.config_dir = Path(config_dir)
+        if not self.config_dir.exists():
+            logger.warning(f"Config directory at {self.config_dir} does not exist")
+            self.config_dir = Path( app_dir() / "config" )
+            logger.warning(f"Using fallback config directory: {self.config_dir}")
+        logger.info(f"Tool configuration directory: {self.config_dir}")
+        
         self.config = None
         self.available_configs = self._discover_configs()
         
@@ -31,6 +45,7 @@ class ToolConfigLoader:
         configs = {}
         
         if not self.config_dir.exists():
+            logger.warning(f"Current working directory: {os.getcwd()}")
             logger.warning(f"Config directory {self.config_dir} does not exist")
             return configs
             

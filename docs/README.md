@@ -15,6 +15,7 @@ Welcome to the comprehensive documentation for the RegonAPI MCP Server - a robus
 ### 🌐 Server Deployment
 - **[HTTP_SERVER_README.md](HTTP_SERVER_README.md)** - HTTP REST API server documentation
 - **[SERVER_HARDENING_SUMMARY.md](SERVER_HARDENING_SUMMARY.md)** - Production hardening and error handling
+- **[PROFESSIONAL_BUILD_TOOL.md](PROFESSIONAL_BUILD_TOOL.md)** - Professional executable builder documentation
 
 ### 🔧 Implementation Details
 - **[TOOLS_CONFIG_IMPLEMENTATION.md](TOOLS_CONFIG_IMPLEMENTATION.md)** - Technical implementation of tool customization
@@ -34,6 +35,7 @@ Welcome to the comprehensive documentation for the RegonAPI MCP Server - a robus
 1. Review [TOOL_CONFIGURATION.md](TOOL_CONFIGURATION.md) for customization options
 2. Check [HTTP_SERVER_README.md](HTTP_SERVER_README.md) for REST API deployment
 3. See [SERVER_HARDENING_SUMMARY.md](SERVER_HARDENING_SUMMARY.md) for production deployment
+4. Use [PROFESSIONAL_BUILD_TOOL.md](PROFESSIONAL_BUILD_TOOL.md) for executable generation
 
 ### For Developers
 1. Study [TOOLS_CONFIG_IMPLEMENTATION.md](TOOLS_CONFIG_IMPLEMENTATION.md) for technical details
@@ -75,6 +77,7 @@ docs/
 ├── TOOL_CONFIGURATION.md            # Tool customization reference
 ├── HTTP_SERVER_README.md            # HTTP server documentation
 ├── SERVER_HARDENING_SUMMARY.md     # Production hardening guide
+├── PROFESSIONAL_BUILD_TOOL.md      # Professional executable builder
 ├── TOOLS_CONFIG_IMPLEMENTATION.md  # Technical implementation details
 ├── PROJECT_SUMMARY.md              # Project architecture overview
 └── EXAMPLES_COMPLETION.md          # Usage examples and patterns
@@ -97,6 +100,10 @@ docs/
 - **`regon_mcp_server/server.py`** - Stdio MCP server
 - **`regon_mcp_server/server_http.py`** - HTTP REST API server
 - **`regon_mcp_server/error_handling.py`** - Error handling framework
+
+### Development Tools
+- **`tools/`** - Development and build tools
+- **`tools/make_exe_professional.py`** - Professional executable builder
 
 ## 🆘 Getting Help
 

@@ -21,6 +21,6 @@ if not exist ".env" (
 )
 
 echo Starting server...
-.venv\Scripts\python.exe regon_mcp_server.py
+.venv\Scripts\python.exe regon_mcp_server\server.py --tools-config polish
 
 pause

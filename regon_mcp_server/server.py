@@ -20,6 +20,7 @@ import json
 import logging
 import os
 import sys
+import time
 import signal
 import traceback
 from typing import Any, Dict, List, Optional, Union
@@ -43,6 +44,17 @@ from RegonAPI.exceptions import (
     ApiInvalidDateFormat,
     ApiError
 )
+
+
+from pathlib import Path
+import sys
+
+def app_dir() -> Path:
+    # Directory of the running app (exe dir when frozen, script dir otherwise)
+    if getattr(sys, "frozen", False):      # PyInstaller sets this
+        return Path(sys.executable).resolve().parent
+    return Path(__file__).resolve().parent
+
 
 # Try relative import first, fall back to direct import
 try:
@@ -79,6 +91,12 @@ try:
     load_dotenv()
 except Exception as e:
     logging.warning(f"Could not load .env file: {e}")
+    env_path = app_dir() / ".env"
+    logging.warning(f"Loading .env file from: {env_path}")
+    try:
+        load_dotenv(env_path)  # loads only if file exists
+    except Exception as e:
+        logging.warning(f"Could not load .env file from {env_path}: {e}")
 
 # Set up comprehensive error handling
 setup_error_handling()
@@ -277,7 +295,10 @@ def initialize_regon_api(production_mode: bool) -> RegonAPI:
                 timeout=30,
                 operation_timeout=30
             )
-            
+            time.sleep(2)
+
+            logger.info(f"RegonAPI to be initialized with key {api_key}")
+
             # Authenticate with retry mechanism
             @retry_on_network_failure
             def authenticate():
@@ -1009,13 +1030,6 @@ async def main():
             logger.error(f"Server initialization failed: {e}", exc_info=True)
             return 1
         
-        # Test RegonAPI connection
-        try:
-            await initialize_regon_api_async(config['production_mode'])
-            logger.info("✅ RegonAPI connection established")
-        except Exception as e:
-            logger.warning(f"RegonAPI connection failed during startup: {e}")
-            logger.info("Server will continue, but RegonAPI calls may fail")
         
         logger.info("🎯 Server ready to accept connections")
         
@@ -1096,7 +1110,6 @@ if __name__ == "__main__":
     # Initialize global variables with safe defaults
     regon_api: Optional[RegonAPI] = None
     logger = None
-    
     try:
         exit_code = asyncio.run(main())
         sys.exit(exit_code)

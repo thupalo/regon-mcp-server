@@ -80,11 +80,46 @@ regon-mcp-server/
 │   ├── tools_polish.json    # Polish language tools
 │   ├── tools_minimal.json   # Minimal tool set
 │   └── tools_detailed.json  # Detailed tool descriptions
-├── 📚 docs/                 # Complete documentation
+├── � tools/                # Development and build tools
+│   └── make_exe_professional.py  # Professional executable builder
+├── �📚 docs/                 # Complete documentation
 ├── 🧪 tests/                # Comprehensive test suite
 ├── 📝 examples/             # Usage examples and utilities
 └── 🚀 start_*.bat          # Quick start scripts
 ```
+
+## 🔧 Development Tools
+
+### Professional Executable Builder
+
+The project includes a sophisticated executable builder for creating production-ready standalone applications:
+
+**Location**: `tools/make_exe_professional.py`
+
+**Features**:
+- 🎯 **Multi-target builds**: Creates HTTP, STDIO, and standalone executables
+- 🛡️ **Professional UX**: Color-coded progress indicators and comprehensive error handling
+- ⚙️ **Automated configuration**: API key management and environment validation
+- 📊 **Build reporting**: Detailed reports with file sizes and build status
+- 🔧 **Customizable options**: Command-line arguments for flexible builds
+
+**Quick Usage**:
+```powershell
+# Build all executables
+python tools\make_exe_professional.py
+
+# Build specific target
+python tools\make_exe_professional.py --target http
+
+# Custom output directory
+python tools\make_exe_professional.py --output-dir custom_dist\
+```
+
+**Output**: Creates standalone `.exe` files in the `production_deployment/regon_mcp/` directory that can be distributed without Python installation.
+
+**Documentation**: See [docs/PROFESSIONAL_BUILD_TOOL.md](docs/PROFESSIONAL_BUILD_TOOL.md) for complete usage guide, configuration options, and troubleshooting.
+
+This tool replaces the basic build scripts with a professional-grade solution suitable for production deployment and distribution.
 
 ## Installation
 

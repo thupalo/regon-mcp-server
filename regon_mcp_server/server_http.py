@@ -48,22 +48,28 @@ except ImportError:
     FASTAPI_AVAILABLE = False
 
 # Import error handling framework
+ERROR_HANDLING_AVAILABLE = False
 try:
-    from .error_handling import (
+    # First try direct import (for standalone executables)
+    import error_handling
+    from error_handling import (
         ServerError, ValidationError, APIError, NetworkError,
         safe_execute, safe_async_execute,
-        RetryMechanism, HealthChecker, InputValidator
+        RetryMechanism, HealthChecker,
+        sanitize_string, validate_input
     )
     ERROR_HANDLING_AVAILABLE = True
-except ImportError:
+except ImportError as e:
     try:
-        from error_handling import (
+        # Try relative import (for module structure)
+        from .error_handling import (
             ServerError, ValidationError, APIError, NetworkError,
             safe_execute, safe_async_execute,
-            RetryMechanism, HealthChecker, InputValidator
+            RetryMechanism, HealthChecker,
+            sanitize_string, validate_input
         )
         ERROR_HANDLING_AVAILABLE = True
-    except ImportError:
+    except ImportError as e2:
         print("WARNING: Error handling module not found, server will run without advanced error handling")
         ERROR_HANDLING_AVAILABLE = False
         # Define minimal fallback decorators and classes
@@ -87,15 +93,32 @@ except ImportError:
         class HealthChecker:
             def run_checks(self):
                 return []
-        class InputValidator:
-            def sanitize_string(self, text):
-                return str(text).strip()
-            def validate_nip(self, nip):
-                return len(str(nip).strip()) >= 10
-            def validate_krs(self, krs):
-                return len(str(krs).strip()) >= 10
-            def validate_regon(self, regon):
-                return len(str(regon).strip()) >= 9
+        def sanitize_string(text, max_length=1000):
+            return str(text).strip()
+        def validate_input(data, required_fields, field_types=None):
+            return data
+
+# Create a compatibility wrapper for InputValidator
+class InputValidator:
+    """Compatibility wrapper for validation functions."""
+    @staticmethod
+    def sanitize_string(text, max_length=1000):
+        return sanitize_string(text, max_length) if ERROR_HANDLING_AVAILABLE else str(text).strip()
+    
+    @staticmethod
+    def validate_nip(nip):
+        """Basic NIP validation - should be 10 digits."""
+        return len(str(nip).strip()) >= 10
+    
+    @staticmethod
+    def validate_krs(krs):
+        """Basic KRS validation - should be 10 digits.""" 
+        return len(str(krs).strip()) >= 10
+    
+    @staticmethod
+    def validate_regon(regon):
+        """Basic REGON validation - should be 9 or 14 digits."""
+        return len(str(regon).strip()) >= 9
 
 # Import the original server implementation to avoid code duplication
 try:
@@ -247,7 +270,7 @@ def initialize_global_components() -> bool:
     try:
         # Initialize components if available
         if ERROR_HANDLING_AVAILABLE:
-            retry_mechanism = RetryMechanism(max_attempts=3, base_delay=1.0)
+            retry_mechanism = RetryMechanism(max_retries=3, delay=1.0)
             health_checker = HealthChecker()
             input_validator = InputValidator()
         else:
@@ -793,15 +816,7 @@ async def run_http_server() -> int:
         if health_checker:
             health_results = health_checker.run_checks()
             logger.info(f"Health checks: {len(health_results)} components checked")
-        
-        # Test stdio server availability
-        try:
-            await stdio_server_module.initialize_regon_api_async(config['production_mode'])
-            logger.info("✅ RegonAPI connection established")
-        except Exception as e:
-            logger.warning(f"RegonAPI connection failed during startup: {e}")
-            logger.info("HTTP server will continue, but RegonAPI calls may fail")
-        
+                
         # Create FastAPI app with comprehensive error handling
         try:
             app = create_http_app(config['production_mode'])
